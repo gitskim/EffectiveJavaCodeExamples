@@ -1,0 +1,2 @@
+### Benefits of Overriding equals method
+* The equals() method provided in the object class uses "==" to compare. For primitive types, "==" works perfectly fine, but for objects it's tricky. Default implementation of equals() class provided by java.lang.Object compares memory location and return true only if two reference cariable are pointing to the same memory location. That's why we override equals() method. 
