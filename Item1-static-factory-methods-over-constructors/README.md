@@ -1,18 +1,3 @@
-### What are Static Factory Methods?
-
-```c
-public final class Boolean implements java.io.Serializable, Comparable<Boolean> {
-
-  public static Boolean valueOf(boolean b) {
-    return b ? Boolean.TRUE : Boolean.FALSE;
-  }
-
-  public static final Boolean TRUE = new Boolean(true);
-
-  public static final Boolean FALSE = new Boolean(false);
-}
-```
-
 ### Benefits of using static factory method
 
 1. Unlike constructors, they have names.
@@ -33,4 +18,37 @@ Benefits include
 
 1. Guarantee that it is a singleton
 2. An immutable class can guarantee that no two equal instances exist
-3.
+
+In the following examples, there is only one instance of an object guaranteed with a static factory method.
+
+```c
+class Qi {
+    private static Qi instance = new Qi();
+
+    static Qi create() {
+        if (instance == null) {
+           instance = new Qi();
+        }
+        return instance;
+    }
+}
+```
+
+and
+
+```c
+public final class Boolean implements java.io.Serializable, Comparable<Boolean> {
+
+  public static Boolean valueOf(boolean b) {
+    return b ? Boolean.TRUE : Boolean.FALSE;
+  }
+
+  public static final Boolean TRUE = new Boolean(true);
+
+  public static final Boolean FALSE = new Boolean(false);
+}
+```
+
+Note that for Q.create(), the null check is necessary. Without the null check, multiple instances of Qi are created, as Q.create() is called multiple times. However, garbage collector will ensure that there is only one instance. Until then, there will be as many instances of Qi as Q.create() is called.
+
+With static factory methods, an immutable class can enjoy a guarantee that no two equal instances exist, which is advantageous in asynchronous programming.
