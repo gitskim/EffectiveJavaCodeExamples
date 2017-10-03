@@ -25,8 +25,10 @@ public class Button {
             return this;
         }
 
-        public Builder setShape(int shape) {
+	public Builder setShape(int shape) {
             this.shape = shape;
+	    // NOTE that this instance is returned here.
+	    // I made a mistsake of creating another instance as a member variable "private Builder instance" and returned the "instance" without even initializing it.
             return this;
         }
 
