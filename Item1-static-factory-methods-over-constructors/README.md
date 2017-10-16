@@ -8,6 +8,7 @@ If there are multiple constructors with different parameters, the user will nto 
 
 If it's expensive to create an instance of an object and equivalent objects are requested often, static factory methods can improve performance. The static keyword makes it so that no matter how many times Boolean.TRUE gets called, there's only one object of Boolean(true), and the same goes for Boolean.FALSE. Note that static objects are stored in method section of the memory.
 
+3. You can change the class to be a singleton without changing its API. For further information please read Item3.
 #### Instance-controlled
 
 Classes with static factory methods are considered to be instance-controlled.

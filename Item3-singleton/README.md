@@ -8,6 +8,8 @@ If the proxy based mock frameworks such as Mockito is used, single classses are 
 
 private constructor + public final fields + public static factory instance
 
+NOTE: a private constructor can be called refelctively by using the AccessibleObject.setAccesible method. In order to defend against reflection, you can make the private constructor throw an error when it's called the second time. 
+
 ```c
 public class SingleDad {
 	private static final SingleDad INSTANCE = new SingleDad(30, 180);
@@ -18,6 +20,9 @@ public class SingleDad {
 		// constructor not available
 		this.age = age;
 		this.height = height;
+		if (INSTANCE != null) {
+			throw new IllegalArgumentException("Single Dad's constructor cannot be called");
+		}
 	}
 
 	public static SingleDad getInstance() {
@@ -59,3 +64,25 @@ my dad's current height is 180
 my dad got older and he is 31 years old
 my dad got shorter and he is 179cm tall
 ```
+
+### What happens when you make make a serializable class a singleton?
+
+The short answer is adding "implements Serializable" is merely not enough. (NOTE: Serialization is a mechanism of writing the state of an object into a byte stream. Deserialization is reconstructing the object from a serialized state, which is a byte stream.) The reason is that each time a serialized instance is deserialized, a new instance will be created. In order to prevent this you need to add readResolve method to the Singleton class and declare all isntance fields transient.
+
+As written in Oracle Docs,
+"Classes that need to designate a replacement when an instance of it is read from the stream should implement this special method with the exact signature."
+
+```c
+
+ ANY-ACCESS-MODIFIER Object readResolve() throws ObjectStreamException;
+
+```
+
+```c
+private SingleDad readResolve() {
+	// Return the one true SingleDad and let the garbage collector take care of the SingleDad impersonators.
+	return INSTANCE;
+}
+```
+
+Java transient keyword is used in serialization. If you define any data member as transient, it will not be serialized.

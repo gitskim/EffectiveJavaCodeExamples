@@ -1,23 +1,27 @@
 public class SingleDad {
-    private static final SingleDad INSTANCE = new SingleDad(30, 180);
-    public int age;
-    public int height;
+	private static final SingleDad INSTANCE = new SingleDad(30, 180);
+	public int age;
+	public int height;
 
-    private SingleDad(int age, int height) {
-        // constructor not available
-        this.age = age;
-        this.height = height;
-    }
+	private SingleDad(int age, int height) {
+		// constructor not available
+		this.age = age;
+		this.height = height;
 
-    public static SingleDad getInstance() {
-        return INSTANCE;
-    }
+		if (INSTANCE != null) {
+			throw new IllegalArgumentException("Single Dad's constructor cannot be called");
+		}
+	}
 
-    public void getOlder() {
-        age++;
-    }
+	public static SingleDad getInstance() {
+		return INSTANCE;
+	}
 
-    public void getShorter() {
-        height--;
-    }
+	public void getOlder() {
+		age++;
+	}
+
+	public void getShorter() {
+		height--;
+	}
 }
