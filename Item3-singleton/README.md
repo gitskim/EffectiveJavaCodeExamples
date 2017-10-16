@@ -85,4 +85,15 @@ private SingleDad readResolve() {
 }
 ```
 
-Java transient keyword is used in serialization. If you define any data member as transient, it will not be serialized.
+Java transient keyword is used in serialization. If you define any data member as transient, it will not be serialized. The reason is all fields are not needed for deserialization and they will be discarded. The only thing that matters is readResolve method, which would re-construct my object using the constructor.
+
+### There is another way of implementing singletons by using enum (THE BEST WAY by Bloch)
+
+```c
+public enum Elvis {
+	INSTANCE;
+	public void leaveTheBuilding() {...}
+}
+```
+
+This approach is functionally equivalent, but it's more concise. 
