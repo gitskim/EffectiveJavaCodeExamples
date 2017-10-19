@@ -59,7 +59,8 @@ General rule of thumb is **Whenever a class manages its own memory, the programm
 
 2. Caches
 
-Caches are another common source of memory leaks. A solution to this woudl be using a WeakHashMap to store caches. Note that WeakHashMap is useful only if the desired lifetime of cache entries is determined by external references to the key, not the value. ? question? does the weak hashmap get garbage collected item by item or the entire map?
+Caches are another common source of memory leaks. A solution to this woudl be using a WeakHashMap to store caches. Note that WeakHashMap is useful only if the desired lifetime of cache entries is determined by external references to the key, not the value. Entries from the map are deleted individually. In order to removed unused caches, this can be done by a background thread or as a side effect of adding new entries to the cache (by setting the limit of how many caches can be saved. Then when a new entry is added, old ones would be deleted.)
+
 
 3. Listeners and other callbacks
 
@@ -68,4 +69,6 @@ The best way to ensure that callbacks are garbage collected is to store only wea
 |key|value|
 |---|---|
 |Callback|value|
+
+Note that values can be anything here. 
 
