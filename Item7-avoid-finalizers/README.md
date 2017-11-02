@@ -57,8 +57,25 @@ There are two legitimate uses.
 
 NOTE: The four classes (FileInputStream, FileOutputStream, Timer, and Connection) have finalizers that serve as safety nets but they don't log warnings. That's just how it was designed originally. 
 
-2. 
+2. A native peer is a native object to which a normal object communicates via native methods. You can think of a Java peer class as a java interface t to deal with C/C++. A native peer is the native C/C++ class to which Java tries to communicate with. Since a native peer is not a normal object, the garbage colelctor doesn't knowa bout it and can't reclaim it when its Java peer is reclaimed. If the native peer does not hold critical resources and not have a termination method, then finalizer can be used to free it. However, if the native peer does hold critical resources, it needs to have explicit termination methods. 
 
+### How to use a finalizer
 
+If you really have to use a finalizer, this is how you would use it.
+1. you need to override the "finalize()" method from Object super class. If you are creating your own super class, make sure to include finalize. 
+2. Add a try catch and in the finally block, call "super.finalzie();
 
- 
+The reason that you need to invoke the superclass finalizer is it gets executed even if the subclass finalization throws an exception and vice versa. Note that if a subclass implementor overrides a superclass finalizer but forget to invoke it, the superclass finzlier will never be invoked. 
+
+```c
+@Override
+protected void finalize() throws Throwable {
+	try { 
+		// finalize subclass state
+	} finally {
+		super.finalize();
+	}
+}
+```
+
+Note that this is a two step process: first you need to override the finalize method and second you need to call the finalize method. Another way of doing it is having a finalizer on an anonymous class whose sole purpose is to finalize its outer class instance. Then every time there is an instance of the outer class made, there is always a finalizer guardian enclosed. The finalization gaurdian needs to be sotred in a private instance field so the finalizer guardian becomes eligible for finalization at the same time as the enclosing instance. When the guardian is finalized, it performs finalization of the outer class as if its finalizer were a method on the outer class. Since when outer class is garbage collected, inner anonymous finalizer guardian gets garbage colelcted as well (note that private fields will be garbage collected when its class is garbage collected), its inner anonymous class' finalize method wil be called and that method works as if you overrode the finalize method for the outer class. 
