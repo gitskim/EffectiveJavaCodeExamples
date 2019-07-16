@@ -18,4 +18,14 @@ public void test() {
     list = new ArrayList<>();
 }
 ```
+* final variable - primitive data type - the values can't be changed. But if the variable references to objects, they can't be changed to refer to any other object. 
+
+* final method - can't be overriden
+* final class - can't be extended
+# How to create an immutable class
+1. Make your class final, so that no other classes can extend it. 
+2. MAke all the fields final, so that they're initialized only once inside the constructor and never modified afterwards. 
+3. Don't expose setter methods. 
+4. When exposing methods which modify the state of the class, you must always return a new instance of the class. 
+
 
