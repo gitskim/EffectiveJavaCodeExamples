@@ -29,3 +29,4 @@ public void test() {
 4. When exposing methods which modify the state of the class, you must always return a new instance of the class. 
 
 
+### String immutability: https://javaconceptoftheday.com/how-the-strings-are-stored-in-the-memory/
